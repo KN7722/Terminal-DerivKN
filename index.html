@@ -15,49 +15,23 @@
         <div class="loader"></div>
         <p>Пожалуйста, не закрывайте эту страницу.</p>
     </div>
-
     <script>
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
-            
             if (code) {
-                // Текст, который "поймает" ваш Python-код
                 const copyText = "DERIV_CODE:" + code;
-                
-                // Создаем временный элемент для копирования
                 const el = document.createElement('textarea');
                 el.value = copyText;
-                el.setAttribute('readonly', '');
-                el.style.position = 'absolute';
-                el.style.left = '-9999px';
                 document.body.appendChild(el);
-                
                 el.select();
-                const success = document.execCommand('copy');
+                document.execCommand('copy');
                 document.body.removeChild(el);
-                
-                if (success) {
-                    document.getElementById('content').innerHTML = `
-                        <h2 style="color: #2ecc71;">✓ УСПЕШНО</h2>
-                        <p>Данные переданы в терминал.</p>
-                        <p>Можете вернуться в программу.</p>
-                    `;
-                } else {
-                    document.getElementById('content').innerHTML = `
-                        <h2 style="color: #e74c3c;">Ошибка копирования</h2>
-                        <p>Пожалуйста, выделите и скопируйте текст ниже вручную:</p>
-                        <code style="background: #333; padding: 10px;">${copyText}</code>
-                    `;
-                }
+                document.getElementById('content').innerHTML = "<h2 style='color:#2ecc71'>✓ УСПЕШНО</h2><p>Вернитесь в терминал.</p>";
             } else {
-                document.getElementById('content').innerHTML = `
-                    <h2>Ожидание данных...</h2>
-                    <p>Эта страница используется для авторизации торгового терминала.</p>
-                `;
+                document.getElementById('content').innerHTML = "<h2>Ожидание данных...</h2>";
             }
         }
     </script>
 </body>
 </html>
-
