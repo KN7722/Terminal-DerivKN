@@ -1,1 +1,63 @@
-OK
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация Terminal DerivKN</title>
+    <style>
+        body { background: #1a1a1a; color: white; font-family: sans-serif; text-align: center; padding-top: 100px; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #e74c3c; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h2>Синхронизация с терминалом...</h2>
+        <div class="loader"></div>
+        <p>Пожалуйста, не закрывайте эту страницу.</p>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            
+            if (code) {
+                // Текст, который "поймает" ваш Python-код
+                const copyText = "DERIV_CODE:" + code;
+                
+                // Создаем временный элемент для копирования
+                const el = document.createElement('textarea');
+                el.value = copyText;
+                el.setAttribute('readonly', '');
+                el.style.position = 'absolute';
+                el.style.left = '-9999px';
+                document.body.appendChild(el);
+                
+                el.select();
+                const success = document.execCommand('copy');
+                document.body.removeChild(el);
+                
+                if (success) {
+                    document.getElementById('content').innerHTML = `
+                        <h2 style="color: #2ecc71;">✓ УСПЕШНО</h2>
+                        <p>Данные переданы в терминал.</p>
+                        <p>Можете вернуться в программу.</p>
+                    `;
+                } else {
+                    document.getElementById('content').innerHTML = `
+                        <h2 style="color: #e74c3c;">Ошибка копирования</h2>
+                        <p>Пожалуйста, выделите и скопируйте текст ниже вручную:</p>
+                        <code style="background: #333; padding: 10px;">${copyText}</code>
+                    `;
+                }
+            } else {
+                document.getElementById('content').innerHTML = `
+                    <h2>Ожидание данных...</h2>
+                    <p>Эта страница используется для авторизации торгового терминала.</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
+
