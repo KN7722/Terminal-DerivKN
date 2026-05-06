@@ -4,34 +4,37 @@
     <meta charset="UTF-8">
     <title>Авторизация Terminal DerivKN</title>
     <style>
-        body { background: #1a1a1a; color: white; font-family: sans-serif; text-align: center; padding-top: 100px; }
-        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #e74c3c; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f4f7f6; margin: 0; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 400px; }
+        .code { font-size: 24px; font-weight: bold; color: #3498db; background: #eef2f7; padding: 15px; border-radius: 6px; margin: 20px 0; word-break: break-all; border: 1px dashed #3498db; }
+        button { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div id="content">
-        <h2>Синхронизация с терминалом...</h2>
-        <div class="loader"></div>
-        <p>Пожалуйста, не закрывайте эту страницу.</p>
+    <div class="card">
+        <h2>Авторизация успешна!</h2>
+        <p>Скопируйте этот код и вставьте в поле терминала:</p>
+        <div id="auth-code" class="code">Загрузка...</div>
+        <button onclick="copyCode()">Копировать код</button>
     </div>
+
     <script>
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const code = urlParams.get('code');
-            if (code) {
-                const copyText = "DERIV_CODE:" + code;
-                const el = document.createElement('textarea');
-                el.value = copyText;
-                document.body.appendChild(el);
-                el.select();
-                document.execCommand('copy');
-                document.body.removeChild(el);
-                document.getElementById('content').innerHTML = "<h2 style='color:#2ecc71'>✓ УСПЕШНО</h2><p>Вернитесь в терминал.</p>";
-            } else {
-                document.getElementById('content').innerHTML = "<h2>Ожидание данных...</h2>";
-            }
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const codeElement = document.getElementById('auth-code');
+
+        if (code) {
+            codeElement.innerText = code;
+        } else {
+            codeElement.innerText = "Код не найден в URL";
+            codeElement.style.color = "red";
+        }
+
+        function copyCode() {
+            navigator.clipboard.writeText(codeElement.innerText);
+            alert("Код скопирован!");
         }
     </script>
 </body>
 </html>
+
