@@ -1,67 +1,26 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Авторизация Terminal DerivKN</title>
+    <title>Код Авторизации</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #1a1a1a; color: white; margin: 0; }
-        .card { background: #2a2a2a; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; max-width: 450px; border: 1px solid #333; }
-        h2 { color: #2ecc71; margin-bottom: 10px; }
-        p { color: #aaa; font-size: 14px; }
-        .code-container { position: relative; margin: 25px 0; }
-        .code { font-size: 22px; font-weight: bold; color: #3498db; background: #111; padding: 20px; border-radius: 8px; word-break: break-all; border: 1px dashed #3498db; cursor: pointer; transition: 0.3s; }
-        .code:hover { background: #000; border-color: #2ecc71; color: #2ecc71; }
-        .btn { background: #3498db; color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; }
-        .btn:hover { background: #2980b9; transform: translateY(-2px); }
-        .footer-info { font-size: 10px; color: #555; margin-top: 20px; }
+        body { background: #1a1a1a; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; margin: 0; }
+        .box { background: #2a2a2a; padding: 30px; border-radius: 15px; text-align: center; border: 1px solid #3498db; }
+        .code { font-size: 28px; color: #3498db; margin: 20px; padding: 10px; border: 1px dashed #3498db; word-break: break-all; }
+        button { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="card">
+    <div class="box">
         <h2>АВТОРИЗАЦИЯ УСПЕШНА ✅</h2>
-        <p>Нажмите на код ниже, чтобы скопировать его, затем вставьте в ваш торговый терминал.</p>
-        
-        <div class="code-container">
-            <div id="auth-code" class="code" onclick="copyCode()">Получение кода...</div>
-        </div>
-
-        <button class="btn" onclick="copyCode()">КОПИРОВАТЬ И ВЕРНУТЬСЯ</button>
-        
-        <div id="state-info" class="footer-info"></div>
+        <p>Скопируйте этот код в терминал:</p>
+        <div id="c" class="code">Загрузка...</div>
+        <button onclick="navigator.clipboard.writeText(document.getElementById('c').innerText);alert('Скопировано!')">КОПИРОВАТЬ</button>
     </div>
-
     <script>
-        // Читаем параметры из URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        const state = urlParams.get('state');
-
-        const codeElement = document.getElementById('auth-code');
-        const stateElement = document.getElementById('state-info');
-
-        if (code) {
-            codeElement.innerText = code;
-            if (state) stateElement.innerText = "Session state: " + state;
-        } else {
-            codeElement.innerText = "ОШИБКА: Код не получен";
-            codeElement.style.color = "#e74c3c";
-            codeElement.style.borderColor = "#e74c3c";
-        }
-
-        function copyCode() {
-            if (!code) return;
-            navigator.clipboard.writeText(code).then(() => {
-                const originalText = codeElement.innerText;
-                codeElement.innerText = "СКОПИРОВАНО! 👍";
-                codeElement.style.color = "#2ecc71";
-                
-                setTimeout(() => {
-                    codeElement.innerText = originalText;
-                    codeElement.style.color = "#3498db";
-                }, 2000);
-            });
-        }
+        const p = new URLSearchParams(window.location.search);
+        const code = p.get('code');
+        document.getElementById('c').innerText = code ? code : "Код не найден";
     </script>
 </body>
 </html>
